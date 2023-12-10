@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-import bcrypt from "bcrypt";
 import { AuthModal } from "../model/user.js";
 export const Register = async (req, res) => {
   const {
@@ -14,24 +13,20 @@ export const Register = async (req, res) => {
     country,
   } = req.body;
 
-  bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash(password, salt, async function (err, hash) {
-      const newUser = new AuthModal({
-        name,
-        email,
-        password: hash,
-        contactNumber,
-        address,
-        state,
-        pincode,
-        country,
-      });
-
-      await newUser.save();
-
-      return res.json(newUser);
-    });
+  const newUser = new AuthModal({
+    name,
+    email,
+    password,
+    contactNumber,
+    address,
+    state,
+    pincode,
+    country,
   });
+
+  await newUser.save();
+
+  return res.json(newUser);
 };
 
 export const Login = async (req, res) => {
